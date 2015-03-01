@@ -3,6 +3,10 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
+def kira(request):
+	text = "It is working!!!!!!!!!!!!!!"
+	text  = text+"It is working!!!!!!!!!!!!!!"
+	return HttpResponse(text)
 
 @csrf_exempt
 def home(request):
