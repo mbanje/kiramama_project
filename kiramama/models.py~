@@ -29,7 +29,7 @@ class PregnancyConfirmation(models.Model):
 	toilet = models.CharField(max_length=2)
 	hand_washing = models.CharField(max_length=2)
 	
-	def check_number_of_sent_valous(self, data):
+	def check_number_of_sent_valous(data):
 		the_sent_data = data['text'].split('+')
 		if getattr(settings,'VARIABLE_NUMBER','')[data['text'].split('+')[0]] > len(the_sent_data):
 			data['valide'] = False

@@ -14,3 +14,8 @@ KNOWN_PREFIXES = {
 'PRE':'PregnancyConfirmation',
 'Tel':'PregnancyConfirmation',
 }
+
+VARIABLE_NUMBER = {
+'PRE':13,
+'Tel':13,
+}
