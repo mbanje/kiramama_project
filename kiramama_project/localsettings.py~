@@ -11,5 +11,6 @@ DATABASES = {
 
 
 KNOWN_PREFIXES = {
-'PRE':'PregnancyConfirmationReport',
+'PRE':'PregnancyConfirmation',
+'Tel':'PregnancyConfirmatio',
 }

@@ -27,6 +27,11 @@ class PregnancyConfirmation(models.Model):
 	mother_height = models.CharField(max_length=5)
 	toilet = models.CharField(max_length=2)
 	hand_washing = models.CharField(max_length=2)
+	
+
+	def check_report(self, data):
+		print("====>I am in check_report...")
+		
 
 class All_messages(models.Model):
 	whole_sms = models.CharField(max_length=10)
