@@ -27,9 +27,10 @@ def check_prefixe(args):
 
 
 
-'''This function will receive requests sent by RapidPro when a new sms repport is received by RapidPro'''
+
 @csrf_exempt
 def receive_report(request):
+	'''This function will receive requests sent by RapidPro when a new sms repport is received by RapidPro'''
 	incoming_data = {}
 	list_of_data = request.body.split("&")
 	for i in list_of_data:
@@ -45,13 +46,16 @@ def receive_report(request):
 
 	#Let's create an instance of the concerned model
 	try:
-		the_model = globals()[incoming_data['model_name']]
-		related_object = the_model()
+		related_object = globals()[incoming_data['model_name']]()
 	except:
 		print("There is an exception due to the model which doesn't exist...")
 		resp = "00"
 		return HttpResponse(resp)
+
+	#Let's call the check_report() function of the  object
+	related_object.check_report(incoming_data)
 	
+
 	resp = 1
 	return HttpResponse(resp)
 
