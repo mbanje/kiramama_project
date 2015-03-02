@@ -4,12 +4,16 @@ from django.db import models
 #NB : Multiple valous of one column must be separated by '*'
 
 class PersonToTrack(models.Model):
-	person_id = models.CharField(primary_key=True)
+	person_id = models.CharField(max_length=30,primary_key=True)
 	name = models.CharField(max_length=20)
 
 class CHW(models.Model):
 	name = models.CharField(max_length=20)
 	tracked_persons = models.ForeignKey(PersonToTrack)
+
+class Prefixe(models.model):
+	prefixe = models.CharField(max_length=3)
+	table_name = models.CharField(max_length=50)
 
 class PregnancyConfirmation(models.Model):
 	last_menstrual_period = models.CharField(max_length=10)
@@ -26,5 +30,5 @@ class PregnancyConfirmation(models.Model):
 
 class All_messages(models.Model):
 	whole_sms = models.CharField(max_length=10)
-	prefixe = models.CharField(max_length=3)
+	prefixe = models.ForeignKey(Prefixe)
 	identifier = models.IntegerField()

@@ -8,3 +8,9 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+
+KNOWN_PREFIXES = {
+'PRE':'PregnancyConfirmationReport',
+'Tel':'PregnancyConfirmationReport',
+}

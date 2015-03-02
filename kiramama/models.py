@@ -11,6 +11,10 @@ class CHW(models.Model):
 	name = models.CharField(max_length=20)
 	tracked_persons = models.ForeignKey(PersonToTrack)
 
+class Prefixe(models.Model):
+	prefixe = models.CharField(max_length=3)
+	table_name = models.CharField(max_length=50)
+
 class PregnancyConfirmation(models.Model):
 	last_menstrual_period = models.CharField(max_length=10)
 	second_appointment_date = models.CharField(max_length=10)
@@ -26,5 +30,5 @@ class PregnancyConfirmation(models.Model):
 
 class All_messages(models.Model):
 	whole_sms = models.CharField(max_length=10)
-	prefixe = models.CharField(max_length=3)
+	prefixe = models.ForeignKey(Prefixe)
 	identifier = models.IntegerField()
