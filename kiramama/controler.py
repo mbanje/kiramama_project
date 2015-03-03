@@ -59,7 +59,9 @@ def receive_report(request):
 	if not incoming_data['valide']:
 		send_sms_via_rapidpro(incoming_data)
 		return HttpResponse(resp)
-		
+
+
+
 	
 	print("FIN")
 	resp = 1
