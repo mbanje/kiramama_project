@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+import re
 
 
 #NB : Multiple valous of one column must be separated by '*'
@@ -39,8 +40,16 @@ class PregnancyConfirmation(models.Model):
 			data['valide'] = False
 			data['response'] = "You sent more values than expected"
 
-	def check_patient_id():
-		pass
+	def check_patient_id(self, data):
+		'''This function checks if the id of the patient is valid'''
+		expression = r'^[0-9]{5}((0[1-9])|([1-2][0-9])|(3[01]))((0[1-9])|(1[0-2]))[0-9]{4}$'
+		print("data['splited_text'][1]...")
+		print(data['splited_text'][1])
+		if re.search(expression, data['splited_text'][1]) is None:
+			data['valide'] = False
+			data['response'] = "The patient id you sent is not valide"
+					
+ 
 	def check_last_mestrual_periode():
 		pass
 	def check_second_appointement_date():
@@ -66,26 +75,35 @@ class PregnancyConfirmation(models.Model):
 
 	def check_report(self, data):
 		#Let's split the text and put the result in data object
-		data['splited_object'] = data['text'].split('+')
+		data['splited_text'] = data['text'].split('+')
 
 		data['valide'] = True
 
 		#Let's check if the phone user sent a number of values as expected
 		self.check_number_of_sent_valous(data)
-		if not data['valide']:
-			return
+		#if not data['valide']:
+			#return
+		
 
 		'''Let's check if the phone user sent a valid id of a pregnant mother or a baby.
 			A valid id is made of 3 parts of numbers. There is no space or any other caracter between two parts.
 			.The first part is made of last five numbers of the identity card of the mother if she has it, if not,
 			it is made of last five numbers of the identity card of the CHW.
-			.The second part is made of two number for the current date followed by two number of the current month followed by
-			two number of the current year(two last. eg: 030315 for 03/03/2015).
+			.The second part is made of two numbers for the current date followed by two numbers of the current month followed by
+			two numbers of the current year(two last. eg: 030315 for 03/03/2015).
 			.The last part is made of two numbers. eg : 01, 02, 03 ...
 			01 is for the first person without an identity card registered by that CHW in a day. 02 is for the second on
 			the same day.
 		'''
-		
+		data['valide'] = True
+		self.check_patient_id(data)
+		if not data['valide']:
+			print("Check id...data['valide']")
+			print(data['valide'])
+			print(data['response'])
+			return	
+
+			
 		
 
 class All_messages(models.Model):
