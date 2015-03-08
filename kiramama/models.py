@@ -43,15 +43,18 @@ class PregnancyConfirmation(models.Model):
 	def check_patient_id(self, data):
 		'''This function checks if the id of the patient is valid'''
 		expression = r'^[0-9]{5}((0[1-9])|([1-2][0-9])|(3[01]))((0[1-9])|(1[0-2]))[0-9]{4}$'
-		print("data['splited_text'][1]...")
-		print(data['splited_text'][1])
 		if re.search(expression, data['splited_text'][1]) is None:
 			data['valide'] = False
 			data['response'] = "The patient id you sent is not valide"
 					
  
-	def check_last_mestrual_periode():
-		pass
+	def check_last_menstrual_periode(self, data):
+		'''This function checks if the id of the menstrual periode is valid'''
+		expression = r'^((0[1-9])|([1-2][0-9])|(3[01])).((0[1-9])|(1[0-2])).[0-9]{4}$'
+		if re.search(expression, data['splited_text'][2]) is None:
+			data['valide'] = False
+			data['response'] = "The last menstrual date you sent is not valide"
+		
 	def check_second_appointement_date():
 		pass
 	def check_gravity():
@@ -81,8 +84,8 @@ class PregnancyConfirmation(models.Model):
 
 		#Let's check if the phone user sent a number of values as expected
 		self.check_number_of_sent_valous(data)
-		#if not data['valide']:
-			#return
+		if not data['valide']:
+			return
 		
 
 		'''Let's check if the phone user sent a valid id of a pregnant mother or a baby.
@@ -95,14 +98,15 @@ class PregnancyConfirmation(models.Model):
 			01 is for the first person without an identity card registered by that CHW in a day. 02 is for the second on
 			the same day.
 		'''
-		data['valide'] = True
 		self.check_patient_id(data)
 		if not data['valide']:
-			print("Check id...data['valide']")
-			print(data['valide'])
-			print(data['response'])
 			return	
 
+
+		'''Let's check if the last menstrual date sent by a CHW is valid'''
+		self.check_last_menstrual_periode(data)
+		if not data['valide']:
+			return
 			
 		
 

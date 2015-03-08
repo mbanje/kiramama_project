@@ -62,7 +62,6 @@ def receive_report(request):
 
 
 
-
 	
 	print("FIN")
 	resp = 1
