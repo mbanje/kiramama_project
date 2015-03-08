@@ -68,7 +68,11 @@ class PregnancyConfirmation(models.Model):
 			data['valide'] = False
 			data['response'] = "The gravity you sent is not valide"
 	def check_parity(self, data):
-		pass
+		''' This function checks if the parity sent by a CHW is valid '''
+		expression = r'^[0-9]{2}$'
+		if re.search(expression, data['splited_text'][5]) is None:
+			data['valide'] = False
+			data['response'] = "The parity you sent is not valide"
 	def check_previous_pregnancy(self, data):
 		pass
 	def check_current_symptoms(self, data):
@@ -125,6 +129,13 @@ class PregnancyConfirmation(models.Model):
 		self.check_gravity(data)
 		if not data['valide']:
 			return
+
+		'''Let's check if the parity sent by a CHW is valid'''
+		self.check_parity(data)
+		if not data['valide']:
+			return
+
+
 
 
 			
