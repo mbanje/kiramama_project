@@ -62,19 +62,23 @@ class PregnancyConfirmation(models.Model):
 			data['valide'] = False
 			data['response'] = "The second ANC appointement date you sent is not valide"
 	def check_gravity(self, data):
-		''' This function checks if the gravity sent by a CHW is valid '''
+		''' This function checks if the gravity code sent by a CHW is valid '''
 		expression = r'^[0-9]{2}$'
 		if re.search(expression, data['splited_text'][4]) is None:
 			data['valide'] = False
 			data['response'] = "The gravity you sent is not valide"
 	def check_parity(self, data):
-		''' This function checks if the parity sent by a CHW is valid '''
+		''' This function checks if the parity code sent by a CHW is valid '''
 		expression = r'^[0-9]{2}$'
 		if re.search(expression, data['splited_text'][5]) is None:
 			data['valide'] = False
 			data['response'] = "The parity you sent is not valide"
 	def check_previous_pregnancy(self, data):
-		pass
+		''' This function checks if the previous pregnancy code sent by a CHW is valid '''
+		expression = r'^GS|NR|KX|YJ|LZ|HD$'
+		if re.search(expression, data['splited_text'][6]) is None:
+			data['valide'] = False
+			data['response'] = "The previous pregnancy code you sent is not valide"
 	def check_current_symptoms(self, data):
 		pass
 	def check_location(self, data):
@@ -112,7 +116,7 @@ class PregnancyConfirmation(models.Model):
 		'''
 		self.check_patient_id(data)
 		if not data['valide']:
-			return	
+			return
 
 
 		'''Let's check if the last menstrual date sent by a CHW is valid'''
@@ -125,11 +129,22 @@ class PregnancyConfirmation(models.Model):
 		if not data['valide']:
 			return
 
-		'''Let's check if the gravity sent by a CHW is valid'''
+		'''Let's check if the gravity code sent by a CHW is valid'''
 		self.check_gravity(data)
 		if not data['valide']:
 			return
 
+		'''Let's check if the parity code sent by a CHW is valid'''
+		self.check_parity(data)
+		if not data['valide']:
+			return
+
+		'''Let's check if the previous pregnancy code sent by a CHW is valid'''
+		self.check_parity(data)
+		if not data['valide']:
+			return
+
+check_previous_pregnancy
 
 			
 		
