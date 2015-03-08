@@ -48,32 +48,36 @@ class PregnancyConfirmation(models.Model):
 			data['response'] = "The patient id you sent is not valide"
 					
  
-	def check_last_menstrual_periode():
+	def check_last_menstrual_periode(self, data):
 		'''This function checks if the id of the menstrual periode is valid'''
 		expression = r'^((0[1-9])|([1-2][0-9])|(3[01])).((0[1-9])|(1[0-2])).[0-9]{4}$'
 		if re.search(expression, data['splited_text'][2]) is None:
 			data['valide'] = False
 			data['response'] = "The last menstrual date you sent is not valide"
 		
-	def check_second_appointement_date():
+	def check_second_appointement_date(self, data):
+		'''This function checks if the second ANC appointement date is valid'''
+		expression = r'^((0[1-9])|([1-2][0-9])|(3[01])).((0[1-9])|(1[0-2])).[0-9]{4}$'
+		if re.search(expression, data['splited_text'][3]) is None:
+			data['valide'] = False
+			data['response'] = "The last menstrual date you sent is not valide"
+	def check_gravity(self, data):
 		pass
-	def check_gravity():
+	def check_parity(self, data):
 		pass
-	def check_parity():
+	def check_previous_pregnancy(self, data):
 		pass
-	def check_previous_pregnancy():
+	def check_current_symptoms(self, data):
 		pass
-	def check_current_symptoms():
+	def check_location(self, data):
 		pass
-	def check_location():
+	def check_mother_weight(self, data):
 		pass
-	def check_mother_weight():
+	def check_mother_height(self, data):
 		pass
-	def check_mother_height():
+	def check_toilet(self, data):
 		pass
-	def check_toilet():
-		pass
-	def check_hand_washing():
+	def check_hand_washing(self, data):
 		pass
 
 	def check_report(self, data):
@@ -98,10 +102,20 @@ class PregnancyConfirmation(models.Model):
 			01 is for the first person without an identity card registered by that CHW in a day. 02 is for the second on
 			the same day.
 		'''
-		data['valide'] = True
 		self.check_patient_id(data)
 		if not data['valide']:
 			return	
+
+
+		'''Let's check if the last menstrual date sent by a CHW is valid'''
+		self.check_last_menstrual_periode(data)
+		if not data['valide']:
+			return
+
+		'''Let's check if the second ANC appointment date is valide'''
+		self.check_second_appointement_date(data)
+		if not data['valide']:
+			return
 
 			
 		
