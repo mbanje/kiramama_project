@@ -130,7 +130,12 @@ class PregnancyConfirmation(models.Model):
 			data['response'] = "The toilet code you sent is not valide"
 
 	def check_hand_washing(self, data):
-		pass
+		''' This function checks if a CHW sent a valid code for hand washing'''
+		allowed_hand_wash_codes = ['NH','HW']
+		Hand_wash_code = data['splited_text'][12]
+		if Hand_wash_code not in allowed_hand_wash_codes:
+			data['valide'] = False
+			data['response'] = "The hand washing code you sent is not valide"
 
 	def check_report(self, data):
 		#Let's split the text and put the result in data object
@@ -206,6 +211,11 @@ class PregnancyConfirmation(models.Model):
 
 		'''Let's check if toilet code sent by a CHW is valid'''
 		self.check_toilet(data)
+		if not data['valide']:
+			return
+
+		'''Let's check if a hand washing code sent by a CHW is valid'''
+		self.check_hand_washing(data)
 		if not data['valide']:
 			return
 
