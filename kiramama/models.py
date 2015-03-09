@@ -110,8 +110,17 @@ class PregnancyConfirmation(models.Model):
 		if re.search(expression, data['splited_text'][9]) is None:
 			data['valide'] = False
 			data['response'] = "The weight you sent is not valide"
+
 	def check_mother_height(self, data):
-		pass
+		''' This function checks if height sent by a CHW is valid 
+			Height must be made of two parts separated by '.' The last one
+			is is made by on number
+		'''
+		expression = r'^HT[0-9]{2,3}.[0-9]$'
+		if re.search(expression, data['splited_text'][10]) is None:
+			data['valide'] = False
+			data['response'] = "The height you sent is not valide"
+
 	def check_toilet(self, data):
 		pass
 	def check_hand_washing(self, data):
@@ -184,7 +193,10 @@ class PregnancyConfirmation(models.Model):
 		if not data['valide']:
 			return
 
-
+		'''Let's check if the height sent by a CHW is valid'''
+		self.check_mother_height(data)
+		if not data['valide']:
+			return
 
 
 
