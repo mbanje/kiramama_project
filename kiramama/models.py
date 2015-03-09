@@ -75,8 +75,11 @@ class PregnancyConfirmation(models.Model):
 			data['response'] = "The parity you sent is not valide"
 	def check_previous_pregnancy(self, data):
 		''' This function checks if the previous pregnancy code sent by a CHW is valid '''
-		expression = r'^GS|NR|KX|YJ|LZ|HD$'
-		if re.search(expression, data['splited_text'][6]) is None:
+		#expression = r'^GS|NR|KX|YJ|LZ|HD$'
+		#if re.search(expression, data['splited_text'][6]) is None:
+		allowed_codes = ['GS','NR','KX','YJ','LZ','HD']
+		previous_pregnancy_code = data['splited_text'][6]
+		if previous_pregnancy_code not in allowed_codes:
 			data['valide'] = False
 			data['response'] = "The previous pregnancy code you sent is not valide"
 	def check_current_symptoms(self, data):
