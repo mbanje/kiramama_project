@@ -105,7 +105,11 @@ class PregnancyConfirmation(models.Model):
 			data['response'] = "The location code you sent is not valide"
 
 	def check_mother_weight(self, data):
-		pass
+		''' This function checks if weight sent by a CHW is valid '''
+		expression = r'^WT[0-9]{2,3}.[0-9]$'
+		if re.search(data['splited_text'][9], expression) is None:
+			data['valide'] = False
+			data['response'] = "The weight you sent is not valide"
 	def check_mother_height(self, data):
 		pass
 	def check_toilet(self, data):
@@ -172,6 +176,11 @@ class PregnancyConfirmation(models.Model):
 
 		'''Let's check if the location code sent by a CHW is valid'''
 		self.check_location(data)
+		if not data['valide']:
+			return
+
+		'''Let's check if the weight sent by a CHW is valid'''
+		self.check_mother_weight(data)
 		if not data['valide']:
 			return
 
