@@ -80,7 +80,17 @@ class PregnancyConfirmation(models.Model):
 			data['valide'] = False
 			data['response'] = "The previous pregnancy code you sent is not valide"
 	def check_current_symptoms(self, data):
-		pass
+		''' This function checks if the previous pregnancy code sent by a CHW is valid '''
+		#expression = r'^[(NP)(MU)(RM)(OL)(YG)](.[(NP)(MU)(RM)(OL)(YG)]){0,4}$'
+		#expression = r'[^NP|^MU|^RM|^OL|^YG|^.NP|^.MU|^.RM|^.OL|^.YG]'
+		#expression = r'[(NP)(MU)(RM)(OL)(YG)(.NP)(.MU)(.RM)(.OL)(.YG)]'
+		allowed_words = ['NP','MU','RM','OL','YG']
+		splited_symptoms = data['splited_text'][7].split('.')
+		for symptom in splited_symptoms:
+			if symptom not in allowed_words:
+				data['valide'] = False
+				data['response'] = "The current symptom(s) code(s) you sent is/are not valide"
+				#It will be good to put here an instruction to stop the iteration
 	def check_location(self, data):
 		pass
 	def check_mother_weight(self, data):
@@ -141,6 +151,11 @@ class PregnancyConfirmation(models.Model):
 
 		'''Let's check if the previous pregnancy code sent by a CHW is valid'''
 		self.check_previous_pregnancy(data)
+		if not data['valide']:
+			return
+
+		'''Let's check if the current symptom(s) code(s) sent by a CHW is/are valid'''
+		self.check_current_symptoms(data)
 		if not data['valide']:
 			return
 
