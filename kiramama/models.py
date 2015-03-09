@@ -122,7 +122,13 @@ class PregnancyConfirmation(models.Model):
 			data['response'] = "The height you sent is not valide"
 
 	def check_toilet(self, data):
-		pass
+		''' This function checks if a CHW sent a valid code for toilet'''
+		allowed_toilet_codes = ['TO','NT']
+		toilet_code = data['splited_text'][11]
+		if toilet_code not in allowed_toilet_codes:
+			data['valide'] = False
+			data['response'] = "The toilet code you sent is not valide"
+
 	def check_hand_washing(self, data):
 		pass
 
@@ -198,7 +204,10 @@ class PregnancyConfirmation(models.Model):
 		if not data['valide']:
 			return
 
-
+		'''Let's check if toilet code sent by a CHW is valid'''
+		self.check_toilet(data)
+		if not data['valide']:
+			return
 
 			
 		
