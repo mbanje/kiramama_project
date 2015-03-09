@@ -83,7 +83,9 @@ class PregnancyConfirmation(models.Model):
 			data['valide'] = False
 			data['response'] = "The previous pregnancy code you sent is not valide"
 	def check_current_symptoms(self, data):
-		''' This function checks if the previous pregnancy code sent by a CHW is valid '''
+		''' This function checks if the previous pregnancy code sent by a CHW is valid 
+			Codes are separated by '.' in case of multiple codes
+		'''
 		#expression = r'^[(NP)(MU)(RM)(OL)(YG)](.[(NP)(MU)(RM)(OL)(YG)]){0,4}$'
 		#expression = r'[^NP|^MU|^RM|^OL|^YG|^.NP|^.MU|^.RM|^.OL|^.YG]'
 		#expression = r'[(NP)(MU)(RM)(OL)(YG)(.NP)(.MU)(.RM)(.OL)(.YG)]'
@@ -95,7 +97,13 @@ class PregnancyConfirmation(models.Model):
 				data['response'] = "The current symptom(s) code(s) you sent is/are not valide"
 				#It will be good to put here an instruction to stop the iteration
 	def check_location(self, data):
-		pass
+		''' This function checks if the location code sent by a CHW is valid '''
+		allowed_locations = ['HP','HO','CL','OR']
+		location_code = data['splited_text'][8]
+		if location_code not in allowed_locations:
+			data['valide'] = False
+			data['response'] = "The location code you sent is not valide"
+
 	def check_mother_weight(self, data):
 		pass
 	def check_mother_height(self, data):
@@ -161,6 +169,13 @@ class PregnancyConfirmation(models.Model):
 		self.check_current_symptoms(data)
 		if not data['valide']:
 			return
+
+		'''Let's check if the location code sent by a CHW is valid'''
+		self.check_location(data)
+		if not data['valide']:
+			return
+
+
 
 
 
