@@ -20,10 +20,12 @@ def send_sms_via_rapidpro(args):
 	print("args['text']")
 	print(args['text'])
 
-
+	phone_number = args['phone']
+	phone_number = "tel:"+args['phone']
+	sms_to_send = 
 	data_to_send = {
   					"urn": ["tel:+25779278861"],
-  					"text": "My first SMS message",
+  					"text": "My first SMS message to Mbanje",
   					"relayer": 156
 					}
 	message_url = 'https://rapidpro.io/api/v1/messages.json'
