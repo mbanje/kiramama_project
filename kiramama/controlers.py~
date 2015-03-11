@@ -123,8 +123,27 @@ class PregnancyConfirmationControler():
 		print("!!!")
 		print("I WILL PUT HERE A CODE FOR saving well written reports")
 
-	def set_last_menstual_date_into_rapidPro():
+	def set_last_menstual_date_into_rapidPro(self, data):
 		'''This function is used to set the last menstrual date of a women into RapidPro'''
+		contacts_url = 'https://rapidpro.io/api/v1/contacts.json'
+		token = 'c2195bdeeca5819f1ded643f0152c0e8bf9a8474'
+		patient_id = "tel:"+data['text'].split('+')[1]
+		last_menstrual_date = data['text'].split('+')[2]
+		contact = {
+			"fields": {"last menstrual date": last_menstrual_date},
+			"urns": [patient_id]
+			}
+		response = requests.post(contacts_url, headers={'Content-type': 'application/json', 'Authorization': 'Token %s' % token}, data = json.dumps(contact))
+		print("!!! IN FEW MINUTES I SET THE LAST MENSTRUAL DATE...")
+		print("patient_id :")
+		print(patient_id)
+		print("response")
+		print(response)
+		print("contact : ")
+		print(contact)
+		print(contact['fields'])
+		#print(contact["phone"])
+		print("I FINISH TO SET THE LAST MENSTRUAL DATE")
 		
 
 
@@ -220,6 +239,8 @@ class PregnancyConfirmationControler():
 		if not data['valide']:
 			return
 
+		'''Let's set the last menstrual date of the patient'''
+		self.set_last_menstual_date_into_rapidPro(data)
 
 
 
@@ -333,7 +354,7 @@ def test(request):
 	contacts_url = 'https://rapidpro.io/api/v1/contacts.json'
 	token = 'c2195bdeeca5819f1ded643f0152c0e8bf9a8474'
 	contact = {
-		"fields": {"last menstrual date": "Here is the last menstrual date"}
+		"fields": {"last menstrual date": "Here is the last menstrual date"},
 		"urns": ["tel:0000"]
 	}
 	response = requests.post(contacts_url, headers={'Content-type': 'application/json', 'Authorization': 'Token %s' % token}, data = json.dumps(contact))
