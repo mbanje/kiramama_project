@@ -121,7 +121,11 @@ class PregnancyConfirmationControler():
 	def save_data(self, data):
 		''' This function is used to save a well written report'''
 		print("!!!")
-		print("I will put here a code for saving well written reports")
+		print("I WILL PUT HERE A CODE FOR saving well written reports")
+
+	def set_last_menstual_date_into_rapidPro():
+		'''This function is used to set the last menstrual date of a women into RapidPro'''
+		
 
 
 
@@ -212,7 +216,9 @@ class PregnancyConfirmationControler():
 			return
 
 		'''Let's save data'''
-
+		self.save_data(data)
+		if not data['valide']:
+			return
 
 
 
@@ -313,5 +319,25 @@ def receive_report(request):
 	incoming_data['response'] = "Your message is well written. Thank you."
 	send_sms_via_rapidpro(incoming_data)
 	print("FIN...")
+	return HttpResponse(resp)
+
+
+
+
+
+
+@csrf_exempt
+def test(request):
+	print("BIGINING OF TEST FUNCTION")
+	resp = 0
+	contacts_url = 'https://rapidpro.io/api/v1/contacts.json'
+	token = 'c2195bdeeca5819f1ded643f0152c0e8bf9a8474'
+	contact = {
+		"fields": {"last menstrual date": "Here is the last menstrual date"},
+		"urns": ["tel:0000"]
+	}
+	response = requests.post(contacts_url, headers={'Content-type': 'application/json', 'Authorization': 'Token %s' % token}, data = json.dumps(contact))
+	print(response)
+	print("END OF TEST FUNCTION")
 	return HttpResponse(resp)
 
